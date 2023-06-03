@@ -83,7 +83,6 @@ public class ButtonAnimationHelper {
         });
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     public void setupButtonAnimation(View view) {
         ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(view, "scaleX", 1.02f, 0.99f, 1.02f);
@@ -125,6 +124,7 @@ public class ButtonAnimationHelper {
     public void stopAnimation() {
         button.setScaleX(1.0f);
         button.setScaleY(1.0f);
+        buttonEditionMode = false;
 
         if(animatorSet != null)
             animatorSet.cancel();

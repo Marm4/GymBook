@@ -72,7 +72,7 @@ public class RoutineActivityLogic {
         listButtonRoutine.add(newButton);
 
         setView(newButton, (int)btnAddNewRoutine.getX(), (int) btnAddNewRoutine.getY());
-        newButton.setText(name);
+        newButton.setText(name.toUpperCase());
         newButton.setId(id);
         setClicks(newButton);
     }
@@ -151,11 +151,12 @@ public class RoutineActivityLogic {
 
         etChangeNameRoutine.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                String inputText = etChangeNameRoutine.getText().toString();
+                String inputText = etChangeNameRoutine.getText().toString().toUpperCase();
                 database.uploadButton(editButton.getId(), inputText);
                 editButton.setText(inputText);
                 editButton.setVisibility(View.VISIBLE);
                 layout.removeView(etChangeNameRoutine);
+                changeNameRoutineById(editButton.getId(), inputText);
                 return true;
             }
             return false;
@@ -178,6 +179,27 @@ public class RoutineActivityLogic {
         layout.removeView(editButton);
         removeRoutineById(editButton.getId());
         database.deleteButtonData(editButton.getId());
+        newPositionButtons(editButton);
+    }
+
+    private void newPositionButtons(Button deletedButton){
+        boolean originalPosition = false;
+        int positionX = (int) deletedButton.getX();
+        int positionY = (int) deletedButton.getY();
+        int auxX;
+        int auxY;
+        for(Button button : listButtonRoutine) {
+            if(originalPosition){
+                auxX = (int) button.getX();
+                auxY = (int) button.getY();
+                setView(button, positionX, positionY);
+                positionX = auxX;
+                positionY = auxY;
+            }
+            if(button.getId() == deletedButton.getId())    originalPosition = true;
+        }
+        if(originalPosition)    setView(btnAddNewRoutine, positionX, positionY);
+        listButtonRoutine.remove(deletedButton);
     }
 
     //Removes a routine from the list whit id
@@ -187,6 +209,17 @@ public class RoutineActivityLogic {
             Routine routine = iterator.next();
             if (routine.getId() == id) {
                 iterator.remove();
+                break;
+            }
+        }
+    }
+
+    public void changeNameRoutineById(int id, String name){
+        Iterator<Routine> iterator = listRoutine.iterator();
+        while (iterator.hasNext()) {
+            Routine routine = iterator.next();
+            if (routine.getId() == id) {
+                routine.setName(name);
                 break;
             }
         }

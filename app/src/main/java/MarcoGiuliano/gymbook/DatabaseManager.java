@@ -32,7 +32,7 @@ public class DatabaseManager {
         while(cursor.moveToNext()){
             Routine routine = new Routine();
             routine.setId(cursor.getInt(cursor.getColumnIndex("id_routine")));
-            routine.setName(cursor.getString(cursor.getColumnIndex("name")));
+            routine.setName(cursor.getString(cursor.getColumnIndex("name")).toUpperCase());
             listRoutine.add(routine);
         }
         cursor.close();

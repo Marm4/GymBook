@@ -83,7 +83,6 @@ public class ExerciseActivity extends AppCompatActivity {
     }
     private void addButtonsListeners(){
         btSave.setOnClickListener(view -> saveData());
-
         btRecord.setOnClickListener(view -> seeMetrics());
     }
 
