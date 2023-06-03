@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LogoStyleMainActivity">
+        <item name="android:layout_width">@dimen/logo_width_main_activity</item>
+        <item name="android:layout_height">@dimen/logo_height_main_activity</item>
+        <item name="content">@string/name</item>
+        <item name="android:contentDescription">@string/name</item>
+    </style>
+
+
+    <style name="ButtonStyleMainActivity">
+        <item name="android:layout_width">@dimen/button_width_main_activity</item>
+        <item name="android:layout_height">@dimen/button_height_main_activity</item>
+        <item name="android:background">@color/secondary_darkblue</item>
+        <item name="android:textColor">@color/primary_cream</item>
+        <item name="android:fontFamily">@font/impact</item>
+        <item name="android:text">@string/routine_button</item>
+        <item name="android:textSize">@dimen/button_text_size_main_activity</item>
+    </style>
+
+    <style name="EditTextStyleMainActivity">
+        <item name="android:layout_width">@dimen/edittext_width_main_activity</item>
+        <item name="android:layout_height">@dimen/edittext_height_main_activity</item>
+        <item name="android:background">@color/secondary_darkblue</item>
+        <item name="android:textColor">@color/primary_cream</item>
+        <item name="android:fontFamily">@font/impact</item>
+        <item name="android:textSize">@dimen/edittext_text_size_main_activity</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:hint">@string/enter_name_edittext</item>
+        <item name="android:textColorHint">@color/transparent_cream</item>
+    </style>
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:layout_width">@dimen/edittext_width_main_activity</item>
+        <item name="android:layout_height">@dimen/edittext_height_main_activity</item>
+        <item name="android:windowBackground">@color/tertiary_brown</item>
+        <item name="android:textColorPrimary">@color/primary_cream</item>
+
+    </style>
+
+    <style name="TextViewStyleRoutine">
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/wixmadefordisplay</item>
+        <item name="android:textColor">@color/primary_cream</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/tertiary_brown</item>
+    </style>
+
+    <style name="EditTextStyleRoutine">
+        <item name="android:fontFamily">@font/wixmadefordisplay</item>
+        <item name="android:textColor">@color/primary_cream</item>
+        <item name="android:background">@color/secondary_darkblue</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColorHint">@color/transparent_cream</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginEnd">1dp</item>
+        <item name="android:layout_marginStart">1dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+
+
+    </style>
+
+    <style name="ButtonSaveHistoryStyleRoutine">
+        <item name="android:layout_width">@dimen/button_save_history_width_routine_add_exercise</item>
+        <item name="android:layout_height">@dimen/button_save_history_height_routine_add_exercise</item>
+        <item name="android:background">@color/tertiary_brown</item>
+        <item name="android:textColor">@color/primary_cream</item>
+        <item name="android:fontFamily">@font/wixmadefordisplay</item>
+    </style>
+
+    <style name="TextViewTitleHistory">
+        <item name="android:layout_width">@dimen/textview_title_history_width</item>
+        <item name="android:layout_height">@dimen/textview_title_history_height</item>
+        <item name="android:background">@color/primary_cream</item>
+        <item name="android:textColor">@color/secondary_darkblue</item>
+        <item name="android:fontFamily">@font/wixmadefordisplay</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+
+    </style>
+
+    <style name="ButtonsPopUpStyleMain">
+        <item name="android:layout_width">@dimen/button_popup_main_width</item>
+        <item name="android:layout_height">@dimen/button_popup_main_height</item>
+        <item name="android:background">@color/tertiary_brown</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+</resources>

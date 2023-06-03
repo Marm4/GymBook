@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnEdit"
+        style="@style/ButtonsPopUpStyleMain"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/button_popup_main_margin_end_start"
+        android:layout_marginBottom="@dimen/button_popup_main_margin_bottom"
+        android:background="@drawable/ic_edition" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        style="@style/ButtonsPopUpStyleMain"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/button_popup_main_margin_end_start"
+        android:layout_marginBottom="@dimen/button_popup_main_margin_bottom"
+        android:background="@drawable/ic_delete" />
+
+</RelativeLayout>

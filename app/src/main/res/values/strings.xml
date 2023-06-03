@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">GymBookApp</string>
+    <string name="routine_button">ADD NEW ROUTINE</string>
+    <string name="enter_name_edittext">ENTER NEW NAME</string>
+
+    <string name="name">NAME</string>
+    <string name="series">SERIES</string>
+    <string name="reps_time">REPS/TIME</string>
+    <string name="kg">KG</string>
+    <string name="date">DATE</string>
+
+    <string name="add_new_exercise">ADD NEW EXERCISE</string>
+    <string name="save">SAVE</string>
+    <string name="history">HISTORY</string>
+
+</resources>

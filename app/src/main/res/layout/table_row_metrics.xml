@@ -1,0 +1,38 @@
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/trExercise"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/tvSeries"
+        style="@style/EditTextStyleRoutine"
+        android:layout_column="1"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tvReps"
+        style="@style/EditTextStyleRoutine"
+        android:layout_column="2"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tvKg"
+        style="@style/EditTextStyleRoutine"
+        android:layout_column="3"
+        android:layout_weight="1"
+        android:hint="@string/kg"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tvDate"
+        style="@style/EditTextStyleRoutine"
+        android:text="@string/date"
+        android:layout_column="4"
+        android:layout_weight="1"
+        android:gravity="center"
+        />
+
+</TableRow>
