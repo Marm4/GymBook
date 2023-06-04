@@ -80,6 +80,13 @@ public class DatabaseManager {
         return listExercises;
     }
 
+    public void deleteDataExercise(int id){
+        String whereClause = "id_exercise = ?";
+        String[] whereArgs = {String.valueOf(id)};
+        database.delete("exercise", whereClause, whereArgs);
+        database.delete("metrics", whereClause, whereArgs);
+    }
+
     public void saveMetrics(Metrics metrics, int id_routine, int id_exercise){
         if(metrics.getSeries() == 0 && metrics.getReps() == 0 && metrics.getWeight() == 0) return;
         ContentValues values = new ContentValues();

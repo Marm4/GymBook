@@ -80,7 +80,7 @@ public class RoutineActivityLogic {
     //Sets animation to a button and layout clicks
     @SuppressLint("ClickableViewAccessibility")
     public void setClicks(Button button){
-        ButtonAnimationHelper buttonAnimation = new ButtonAnimationHelper(this, button);
+        ButtonAnimationHelper buttonAnimation = new ButtonAnimationHelper(this, null, button);
         listButtonAnimation.add(buttonAnimation);
 
         layout.setOnClickListener(view -> restoreView());
@@ -182,6 +182,7 @@ public class RoutineActivityLogic {
         newPositionButtons(editButton);
     }
 
+    //Put the buttons in their respective places after a deletion
     private void newPositionButtons(Button deletedButton){
         boolean originalPosition = false;
         int positionX = (int) deletedButton.getX();
@@ -204,20 +205,14 @@ public class RoutineActivityLogic {
 
     //Removes a routine from the list whit id
     public void removeRoutineById(int id) {
-        Iterator<Routine> iterator = listRoutine.iterator();
-        while (iterator.hasNext()) {
-            Routine routine = iterator.next();
-            if (routine.getId() == id) {
-                iterator.remove();
-                break;
-            }
+        for(Routine routine : listRoutine){
+            if(routine.getId() == id)
+                listRoutine.remove(routine);
         }
     }
 
     public void changeNameRoutineById(int id, String name){
-        Iterator<Routine> iterator = listRoutine.iterator();
-        while (iterator.hasNext()) {
-            Routine routine = iterator.next();
+        for (Routine routine : listRoutine) {
             if (routine.getId() == id) {
                 routine.setName(name);
                 break;

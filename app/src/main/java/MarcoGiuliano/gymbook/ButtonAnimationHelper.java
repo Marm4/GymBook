@@ -10,42 +10,46 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TableRow;
 
 
 public class ButtonAnimationHelper {
     private final RoutineActivityLogic routineActivityLogic;
+    private final ExerciseActivityLogic exerciseActivityLogic;
     private AnimatorSet animatorSet;
     private final Handler handler;
     private long startTime;
     private float initialX;
     private boolean isMoveStarted;
-    private boolean buttonEditionMode;
-    private boolean buttonIsDeleted;
-    private Button button;
+    private boolean viewEditionMode;
+    private boolean viewIsDeleted;
+    private View view;
     private static final float MIN_DISTANCE = 150;
     private static final float DURATION_TOUCH = 1000;
     private static final int DURATION_ANIMATION = 300;
     private static final int DURATION_SCALE_X_Y = 2000;
 
-    public ButtonAnimationHelper(RoutineActivityLogic routineActivityLogic, Button button){
+    public ButtonAnimationHelper(RoutineActivityLogic routineActivityLogic, ExerciseActivityLogic exerciseActivityLogic, View view){
         this.routineActivityLogic = routineActivityLogic;
-        this.button = button;
+        this.exerciseActivityLogic = exerciseActivityLogic;
+        this.view = view;
         isMoveStarted = false;
-        buttonEditionMode = false;
-        buttonIsDeleted = false;
+        viewEditionMode = false;
+        viewIsDeleted = false;
         handler = new Handler();
         setClicks();
     }
 
     private final Runnable animationRunnable = () -> {
-        if(buttonEditionMode)   isMoveStarted = true;
-        buttonEditionMode = true;
-        setupButtonAnimation(button);
+        if(viewEditionMode)   isMoveStarted = true;
+        viewEditionMode = true;
+        setupButtonAnimation(view);
     };
 
-    @SuppressWarnings("ConstantConditions") @SuppressLint("ClickableViewAccessibility")
+     @SuppressLint("ClickableViewAccessibility")
     public void setClicks(){
-        button.setOnTouchListener((view, motionEvent) -> {
+        view.setOnTouchListener((view, motionEvent) -> {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     startTime = System.currentTimeMillis();
@@ -55,10 +59,10 @@ public class ButtonAnimationHelper {
 
                 case MotionEvent.ACTION_MOVE:
                     float deltaX = motionEvent.getX() - initialX;
-                    if ((deltaX > MIN_DISTANCE || deltaX < -MIN_DISTANCE) && buttonEditionMode) {
+                    if ((deltaX > MIN_DISTANCE || deltaX < -MIN_DISTANCE) && viewEditionMode) {
                         animateButtonRemoval();
-                        buttonEditionMode = false;
-                        buttonIsDeleted = true;
+                        viewEditionMode = false;
+                        viewIsDeleted = true;
                         stopAnimation();
                         isMoveStarted = false;
                         handler.removeCallbacks(animationRunnable);
@@ -67,20 +71,30 @@ public class ButtonAnimationHelper {
 
                 case MotionEvent.ACTION_UP:
                     long duration = System.currentTimeMillis() - startTime;
-                    if (!isMoveStarted && duration < DURATION_TOUCH) {
-                        handler.removeCallbacks(animationRunnable);
-                        if (buttonEditionMode) {
-                            routineActivityLogic.editButtonName(button);
-                            buttonEditionMode = false;
-                            stopAnimation();
-                        } else if (!buttonEditionMode && !buttonIsDeleted) {
-                            routineActivityLogic.newExerciseActivity(button);
-                        }
-                    } else if (duration < DURATION_TOUCH) isMoveStarted = false;
+                    if(routineActivityLogic != null)    forRoutine(duration);
+                    else if(exerciseActivityLogic != null)  forExercise(duration);
                     break;
             }
             return false;
         });
+    }
+
+    private void forExercise(long duration){
+        if(viewEditionMode && duration < DURATION_TOUCH)    exerciseActivityLogic.editTextName((EditText) view);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void forRoutine(long duration){
+        if (!isMoveStarted && duration < DURATION_TOUCH) {
+            handler.removeCallbacks(animationRunnable);
+            if (viewEditionMode) {
+                routineActivityLogic.editButtonName((Button) view);
+                viewEditionMode = false;
+                stopAnimation();
+            } else if (!viewEditionMode && !viewIsDeleted) {
+                routineActivityLogic.newExerciseActivity((Button) view);
+            }
+        } else if (duration < DURATION_TOUCH) isMoveStarted = false;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -100,8 +114,10 @@ public class ButtonAnimationHelper {
         animatorSet.start();
     }
 
+
+
     public void animateButtonRemoval() {
-        Animation animation = new TranslateAnimation(0, button.getWidth(), 0, 0);
+        Animation animation = new TranslateAnimation(0, view.getWidth(), 0, 0);
         animation.setDuration(DURATION_ANIMATION);
         animation.setInterpolator(new AccelerateInterpolator());
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -111,20 +127,23 @@ public class ButtonAnimationHelper {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                routineActivityLogic.deleteButton(button);
+                if(routineActivityLogic != null)    routineActivityLogic.deleteButton((Button) view);
+                else if(exerciseActivityLogic != null)  exerciseActivityLogic.alertDelete((EditText) view);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        button.startAnimation(animation);
+        view.startAnimation(animation);
     }
 
+
+
     public void stopAnimation() {
-        button.setScaleX(1.0f);
-        button.setScaleY(1.0f);
-        buttonEditionMode = false;
+        view.setScaleX(1.0f);
+        view.setScaleY(1.0f);
+        viewEditionMode = false;
 
         if(animatorSet != null)
             animatorSet.cancel();
