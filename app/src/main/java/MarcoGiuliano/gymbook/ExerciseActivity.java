@@ -90,9 +90,9 @@ public class ExerciseActivity extends AppCompatActivity {
         setTitle(routine.getName());
         routine.setListExercise(database.loadDataExercise(routine.getId()));
         for(Exercise exercise : routine.getListExercise()){
-            logic.addNewExercise(exercise);
+            logic.addNewExercise(exercise, exercise.getId());
         }
-        logic.addNewExercise(null);
+        logic.addNewExercise(null, 0);
     }
 
     private void setTitle(String name){
@@ -126,6 +126,4 @@ public class ExerciseActivity extends AppCompatActivity {
         intent.putExtra("routine", routine);
         startActivity(intent);
     }
-
-
 }

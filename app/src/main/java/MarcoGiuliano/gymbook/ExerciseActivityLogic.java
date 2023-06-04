@@ -2,7 +2,6 @@ package MarcoGiuliano.gymbook;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,10 +11,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-
-import java.util.List;
 
 public class ExerciseActivityLogic {
     private final Context context;
@@ -30,7 +28,7 @@ public class ExerciseActivityLogic {
         this.database = database;
     }
 
-    public void addNewExercise(Exercise exercise){
+    public void addNewExercise(Exercise exercise, int id_exercise){
         LayoutInflater inflater = LayoutInflater.from(context);
         TableRow tableRow = (TableRow) inflater.inflate(R.layout.table_row_exercise, tlRoutine, false);
         EditText name = tableRow.findViewById(R.id.etName);
@@ -41,6 +39,7 @@ public class ExerciseActivityLogic {
         } else {
             name.setText(exercise.getName());
             name.setInputType(InputType.TYPE_NULL);
+            name.setId(id_exercise);
             new ButtonAnimationHelper(null, this, name);
         }
 
@@ -89,7 +88,7 @@ public class ExerciseActivityLogic {
         routine.addExercise(exercise);
         etName.setInputType(InputType.TYPE_NULL);
 
-        addNewExercise(null);
+        addNewExercise(null, 0);
         new ButtonAnimationHelper(null, this, etName);
     }
 
@@ -116,33 +115,24 @@ public class ExerciseActivityLogic {
     public void alertDelete(EditText etDelete){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Delete exercise");
-        builder.setMessage("Are you sure you want to delete this exercise? All metrics wil be deleted as well");
+        builder.setMessage("Are you sure you want to delete this exercise? All metrics will be deleted as well");
+        etDelete.setVisibility(View.GONE);
 
-        builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                database.deleteDataExercise(etDelete.getId());
-                tlRoutine.removeView((TableRow)etDelete.getParent());
-                removeExerciseById(etDelete.getId());
-            }
+        builder.setPositiveButton("Accept", (dialog, which) -> {
+            database.deleteDataExercise(etDelete.getId());
+            tlRoutine.removeView((TableRow)etDelete.getParent());
+            removeExerciseById(etDelete.getId());
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> etDelete.setVisibility(View.VISIBLE));
+
+        builder.setOnCancelListener(dialog -> etDelete.setVisibility(View.VISIBLE));
+
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
-    public void removeExerciseById(int id){
-        List<Exercise> listExercise = routine.getListExercise();
-        for(Exercise exercise : routine.getListExercise()){
-            if(exercise.getId() == id) {
-                listExercise.remove(exercise);
-            }
-        }
+    public void removeExerciseById(int id) {
+        routine.getListExercise().removeIf(exercise -> exercise.getId() == id);
     }
 }

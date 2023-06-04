@@ -16,8 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RoutineActivityLogic {
@@ -174,14 +175,6 @@ public class RoutineActivityLogic {
         imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    //Removes view and delete from database
-    public void deleteButton(Button editButton){
-        layout.removeView(editButton);
-        removeRoutineById(editButton.getId());
-        database.deleteButtonData(editButton.getId());
-        newPositionButtons(editButton);
-    }
-
     //Put the buttons in their respective places after a deletion
     private void newPositionButtons(Button deletedButton){
         boolean originalPosition = false;
@@ -205,10 +198,7 @@ public class RoutineActivityLogic {
 
     //Removes a routine from the list whit id
     public void removeRoutineById(int id) {
-        for(Routine routine : listRoutine){
-            if(routine.getId() == id)
-                listRoutine.remove(routine);
-        }
+        listRoutine.removeIf(routine -> routine.getId() == id);
     }
 
     public void changeNameRoutineById(int id, String name){
@@ -257,6 +247,25 @@ public class RoutineActivityLogic {
         createNewButton(id, inputText);
         layout.removeView(input);
         setView(btnAddNewRoutine, 0,0); //Then set btnAddNewRoutine where its have to be
+    }
+
+    public void alertDelete(Button button){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete routine");
+        builder.setMessage("Are you sure you want to delete this routine? All exercise and metrics will be deleted as well");
+        button.setVisibility(View.GONE);
+
+        builder.setPositiveButton("Accept", (dialog, which) -> {
+            layout.removeView(button);
+            removeRoutineById(button.getId());
+            database.deleteButtonData(button.getId());
+            newPositionButtons(button);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> button.setVisibility(View.VISIBLE));
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

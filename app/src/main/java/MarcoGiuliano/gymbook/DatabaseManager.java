@@ -13,6 +13,7 @@ import java.util.List;
 public class DatabaseManager {
     private final SQLiteDatabase database;
 
+    @SuppressWarnings("resource")
     public DatabaseManager(Context context) {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
         database = databaseHelper.getWritableDatabase();

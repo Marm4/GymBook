@@ -11,7 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableRow;
 
 
 public class ButtonAnimationHelper {
@@ -127,7 +126,7 @@ public class ButtonAnimationHelper {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if(routineActivityLogic != null)    routineActivityLogic.deleteButton((Button) view);
+                if(routineActivityLogic != null)    routineActivityLogic.alertDelete((Button) view);
                 else if(exerciseActivityLogic != null)  exerciseActivityLogic.alertDelete((EditText) view);
             }
 
