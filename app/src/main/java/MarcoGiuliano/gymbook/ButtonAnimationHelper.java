@@ -79,7 +79,8 @@ public class ButtonAnimationHelper {
     }
 
     private void forExercise(long duration){
-        if(viewEditionMode && duration < DURATION_TOUCH)    exerciseActivityLogic.editTextName((EditText) view);
+         if(viewEditionMode && duration < DURATION_TOUCH)    exerciseActivityLogic.editEditTextName((EditText) view);
+         if(duration < DURATION_TOUCH)   stopAnimation();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -136,8 +137,6 @@ public class ButtonAnimationHelper {
         });
         view.startAnimation(animation);
     }
-
-
 
     public void stopAnimation() {
         view.setScaleX(1.0f);

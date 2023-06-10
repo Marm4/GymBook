@@ -83,7 +83,6 @@ public class RoutineActivityLogic {
     public void setClicks(Button button){
         ButtonAnimationHelper buttonAnimation = new ButtonAnimationHelper(this, null, button);
         listButtonAnimation.add(buttonAnimation);
-
         layout.setOnClickListener(view -> restoreView());
     }
 
@@ -153,7 +152,7 @@ public class RoutineActivityLogic {
         etChangeNameRoutine.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 String inputText = etChangeNameRoutine.getText().toString().toUpperCase();
-                database.uploadButton(editButton.getId(), inputText);
+                database.updateButton(editButton.getId(), inputText);
                 editButton.setText(inputText);
                 editButton.setVisibility(View.VISIBLE);
                 layout.removeView(etChangeNameRoutine);
@@ -194,11 +193,6 @@ public class RoutineActivityLogic {
         }
         if(originalPosition)    setView(btnAddNewRoutine, positionX, positionY);
         listButtonRoutine.remove(deletedButton);
-    }
-
-    //Removes a routine from the list whit id
-    public void removeRoutineById(int id) {
-        listRoutine.removeIf(routine -> routine.getId() == id);
     }
 
     public void changeNameRoutineById(int id, String name){
@@ -257,7 +251,7 @@ public class RoutineActivityLogic {
 
         builder.setPositiveButton("Accept", (dialog, which) -> {
             layout.removeView(button);
-            removeRoutineById(button.getId());
+            listRoutine.removeIf(routine -> routine.getId() == button.getId());
             database.deleteButtonData(button.getId());
             newPositionButtons(button);
         });

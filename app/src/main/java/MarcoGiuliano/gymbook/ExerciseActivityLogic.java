@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
@@ -106,9 +105,48 @@ public class ExerciseActivityLogic {
         exercise.getEtTime_weight().setText("");
     }
 
-    public void editTextName(EditText changeName){
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void editEditTextName(EditText changeName){
         changeName.setText("");
         changeName.setInputType(InputType.TYPE_CLASS_TEXT);
+        inputSettings(changeName);
+        changeName.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if(!changeName.getText().toString().isEmpty()){
+                    onEnterChangeName(changeName);
+                }
+                return true;
+            }
+            return false;
+        });
+
+        tlRoutine.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if(!changeName.getText().toString().isEmpty()){
+                    onEnterChangeName(changeName);
+                }
+                return true;
+            }
+            return false;
+        });
+    }
+
+    public void onEnterChangeName(EditText changeName){
+        String name = changeName.getText().toString().toUpperCase();
+        changeName.setText(name);
+        Exercise exerciseChange = null;
+
+        for (Exercise exercise : routine.getListExercise())
+            if (exercise.getId() == changeName.getId())
+                exerciseChange = exercise;
+
+        if(exerciseChange!=null){
+            exerciseChange.setName(name);
+            database.updateExercise(exerciseChange.getId(), name);
+        }
+        changeName.setInputType(InputType.TYPE_NULL);
+
     }
 
 
@@ -121,7 +159,7 @@ public class ExerciseActivityLogic {
         builder.setPositiveButton("Accept", (dialog, which) -> {
             database.deleteDataExercise(etDelete.getId());
             tlRoutine.removeView((TableRow)etDelete.getParent());
-            removeExerciseById(etDelete.getId());
+            routine.getListExercise().removeIf(exercise -> exercise.getId() == etDelete.getId());
         });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> etDelete.setVisibility(View.VISIBLE));
@@ -130,9 +168,5 @@ public class ExerciseActivityLogic {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public void removeExerciseById(int id) {
-        routine.getListExercise().removeIf(exercise -> exercise.getId() == id);
     }
 }

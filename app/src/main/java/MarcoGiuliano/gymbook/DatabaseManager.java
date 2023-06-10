@@ -48,13 +48,13 @@ public class DatabaseManager {
             database.delete("metrics", whereClause, whereArgs);
         }
 
-    public void uploadButton(int id, String inputText){
+    public void updateButton(int id_routine, String name){
         String whereClause = "id_routine = ?";
-        String[] whereArgs = {String.valueOf(id)};
+        String[] whereArgs = {String.valueOf(id_routine)};
         Cursor cursor = database.query("routine", null,whereClause, whereArgs, null, null, null);
         if(cursor.moveToFirst()){
             ContentValues values = new ContentValues();
-            values.put("name", inputText);
+            values.put("name", name);
             database.update("routine", values, whereClause, whereArgs);
         }
         cursor.close();
@@ -81,12 +81,25 @@ public class DatabaseManager {
         return listExercises;
     }
 
-    public void deleteDataExercise(int id){
+    public void updateExercise(int id_exercise,String name){
         String whereClause = "id_exercise = ?";
-        String[] whereArgs = {String.valueOf(id)};
+        String[] whereArgs = {String.valueOf(id_exercise)};
+        Cursor cursor = database.query("exercise", null,whereClause, whereArgs, null, null, null);
+        if(cursor.moveToFirst()){
+            ContentValues values = new ContentValues();
+            values.put("name", name);
+            database.update("exercise", values, whereClause, whereArgs);
+        }
+        cursor.close();
+    }
+
+    public void deleteDataExercise(int id_exercise){
+        String whereClause = "id_exercise = ?";
+        String[] whereArgs = {String.valueOf(id_exercise)};
         database.delete("exercise", whereClause, whereArgs);
         database.delete("metrics", whereClause, whereArgs);
     }
+
 
     public void saveMetrics(Metrics metrics, int id_routine, int id_exercise){
         if(metrics.getSeries() == 0 && metrics.getReps() == 0 && metrics.getWeight() == 0) return;
